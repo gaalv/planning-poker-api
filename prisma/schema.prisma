@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  Room      Room[]
+  Vote      Vote[]
+
+  @@map("users")
+}
+
+model Room {
+  id         String   @id @default(uuid())
+  title      String
+  author     String
+  revealMode Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  members    User[]
+  storys     Story[]
+  votes      Vote[]
+
+  @@map("rooms")
+}
+
+model Vote {
+  id     String  @id @default(uuid())
+  value  String
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+  Room   Room?   @relation(fields: [roomId], references: [id])
+  roomId String?
+
+  @@map("votes")
+}
+
+model Story {
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  roomId    String
+  Room      Room     @relation(fields: [roomId], references: [id])
+
+  @@map("storys")
+}
