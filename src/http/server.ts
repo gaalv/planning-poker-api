@@ -9,6 +9,7 @@ import { createVote } from "./routes/create-vote";
 import { revealRoom } from "./routes/reveal-room";
 import { enterRoom } from "./routes/enter-room";
 import { revokeVote } from "./routes/revoke-vote";
+import { healthCheck } from "./routes/healthcheck";
 
 const app = fastify();
 
@@ -16,6 +17,7 @@ app.register(cors, {
   origin: '*'
 })
 
+app.register(healthCheck)
 app.register(fastifyWebsocket);
 app.register(createRoom)
 app.register(getRoom)
