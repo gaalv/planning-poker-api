@@ -28,6 +28,6 @@ app.register(revealRoom)
 app.register(enterRoom)
 app.register(revokeVote)
 
-app.listen({ port: 8080 }).then(() => {
+app.listen({ port: 8080, host: '0.0.0.0' }).then(() => {
   console.log("🚀🚀 HTTP server is running!");
 });
